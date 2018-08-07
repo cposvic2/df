@@ -44,6 +44,7 @@ include( DEEDFAX_PLUGIN_PATH . '/search-results.php');
 include( DEEDFAX_PLUGIN_PATH . '/ajax.php');
 
 if ( is_admin() ) {
+	require_once DEEDFAX_PLUGIN_PATH . '/admin-user.php';
 	require_once DEEDFAX_PLUGIN_PATH . '/admin-properties.php';
 	require_once DEEDFAX_PLUGIN_PATH . '/admin-subdivisions.php';
 	require_once DEEDFAX_PLUGIN_PATH . '/admin-districts.php';
