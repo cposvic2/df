@@ -336,6 +336,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 	protected $_tableName = DEEDFAX_PROPERTY_TABLE;
 	protected $_columns = array(
 		'id' => '%d',
+		'old_id' => '%d',
 		'latitude' => '%f',
 		'longitude' => '%f',
 		'parish_id' => '%d',
@@ -349,6 +350,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 		'house' => '%s',
 		'code' => '%s',
 		'price' => '%f',
+		'price_text' => '%s',
 		'purchaser' => '%s',
 		'entry' => '%s',
 		'seller' => '%s',
@@ -363,7 +365,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 		$wpdb->insert(
 			$this->_tableName,
 			array(
-				'latitude' => $object->getOldId(), 
+				'old_id' => $object->getOldId(), 
 				'latitude' => $object->getLatitude(), 
 				'longitude' => $object->getLongitude(),
 				'parish_id' => $object->getParishId(),
@@ -377,7 +379,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 				'street_id' => $object->getStreetId(),
 				'code' => $object->getCode(),
 				'price' => $object->getPrice(),
-				'price' => $object->getPriceText(),
+				'price_text' => $object->getPriceText(),
 				'purchaser' => $object->getPurchaser(),
 				'entry' => $object->getEntry(),
 				'seller' => $object->getSeller(),
@@ -387,28 +389,28 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 				'date_added' => $object->getDateAddedNow(),
 			),
 			array( 
-				'%d',
-				'%f',
-				'%f',
-				'%d',
-				'%d',
-				'%d',
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-				'%f',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
+				'%d', // old_id
+				'%f', // latitude
+				'%f', // longitude
+				'%d', // parish_id
+				'%d', // district_id
+				'%s', // township
+				'%d', // subdivision_id
+				'%s', // square
+				'%s', // lot
+				'%s', // size
+				'%s', // house
+				'%d', // street_id
+				'%s', // code
+				'%f', // price
+				'%s', // price_text
+				'%s', // purchaser
+				'%s', // entry
+				'%s', // seller
+				'%s', // sell_date
+				'%s', // remarks
+				'%s', // publication_date
+				'%s', // date_added
 			)
 		);
 		return $wpdb->insert_id;
@@ -419,7 +421,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 		return $wpdb->update(
 			$this->_tableName,
 			array(
-				'latitude' => $object->getOldId(), 
+				'old_id' => $object->getOldId(), 
 				'latitude' => $object->getLatitude(), 
 				'longitude' => $object->getLongitude(),
 				'parish_id' => $object->getParishId(),
@@ -433,7 +435,7 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 				'street_id' => $object->getStreetId(),
 				'code' => $object->getCode(),
 				'price' => $object->getPrice(),
-				'price' => $object->getPriceText(),
+				'price_text' => $object->getPriceText(),
 				'purchaser' => $object->getPurchaser(),
 				'entry' => $object->getEntry(),
 				'seller' => $object->getSeller(),
@@ -444,28 +446,28 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 			),
 			array( 'id' => $object->getId() ),
 			array( 
-				'%d',
-				'%f',
-				'%f',
-				'%d',
-				'%d',
-				'%d',
-				'%d',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-				'%f',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
-				'%s',
+				'%d', // old_id
+				'%f', // latitude
+				'%f', // longitude
+				'%d', // parish_id
+				'%d', // district_id
+				'%s', // township
+				'%d', // subdivision_id
+				'%s', // square
+				'%s', // lot
+				'%s', // size
+				'%s', // house
+				'%d', // street_id
+				'%s', // code
+				'%f', // price
+				'%s', // price_text
+				'%s', // purchaser
+				'%s', // entry
+				'%s', // seller
+				'%s', // sell_date
+				'%s', // remarks
+				'%s', // publication_date
+				'%s', // date_added
 			)
 		);
 	}

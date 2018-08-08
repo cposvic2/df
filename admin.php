@@ -20,7 +20,7 @@ $import_columns = array(
 	array('value' => 'purchaser', 'label' => 'Purchaser'),
 	array('value' => 'seller', 'label' => 'Seller Name'),
 	array('value' => 'entry', 'label' => 'Entry #'),
-	array('value' => 'sell_date', 'label' => 'Sell Date (m/d/yyyy)'),
+	array('value' => 'sell_date', 'label' => 'Sell Date (mm/dd/yyyy)'),
 	array('value' => 'pubyear', 'label' => 'Publication Year'),
 	array('value' => 'pubmonth', 'label' => 'Publication Month'),
 	array('value' => 'remarks', 'label' => 'Notes/Remarks'),

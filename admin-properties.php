@@ -165,6 +165,10 @@ function display_property_edit() {
 							<input type="date" name="publication_date" id="publication_date" value="<?php echo $entry->getPublicationDate('Y-m-d')?>" class="regular-text">
 						</td>
 					</tr>
+					<tr>
+						<th scope="row"><label for="date_added">Date added</label></th>
+						<td><?php echo $entry->getDateAdded() ?></td>
+					</tr>
 				</tbody>
 			</table>
 			<input type="hidden" name="action" value="deedfax_property_edit">

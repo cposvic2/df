@@ -46,8 +46,8 @@ function parse_deedfax_csv( $csv_location, $parish_id, $column_order, $has_heade
 				if ( df_import_col_exists('price', $column_order, $data) ) {
 					$property->setPrettyPrice( import_encode($data[$column_order['price']]) );
 				}
-				if ( df_import_col_exists('date', $column_order, $data) ) {
-					$property->setSellDate( import_encode($data[$column_order['date']]), 'm/d/Y' );
+				if ( df_import_col_exists('sell_date', $column_order, $data) ) {
+					$property->setSellDate( import_encode($data[$column_order['sell_date']]), 'm/d/Y' );
 				}
 				if ( df_import_col_exists('pubmonth', $column_order, $data) && df_import_col_exists('pubyear', $column_order, $data) ) {
 					$property->setPublicationDate( import_encode($data[$column_order['pubmonth']]).'-01-'.import_encode($data[$column_order['pubyear']]), 'm-d-Y' );
@@ -82,6 +82,8 @@ function parse_deedfax_csv( $csv_location, $parish_id, $column_order, $has_heade
 				} else {
 					$property->setTownship( 0 );
 				}
+
+				$property->setDateAddedNow();
 
 				DeedfaxDAOFactory::getDAO('DeedfaxPropertyDAO')->insert($property);
 				$properties_added++;

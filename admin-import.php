@@ -51,7 +51,7 @@ function deedfax_admin_import_callback() {
 		<table class="form-table">
 			<tbody>
 				<?php
-				$column_inputs = array('subdivision', 'square', 'lots', 'size', 'house', 'number', 'street', 'code', 'price', 'purchaser', 'entry', 'seller', 'other', 'other', 'other', 'date', 'pubyear', 'pubmonth', 'remarks');
+				$column_inputs = array('subdivision', 'square', 'lots', 'size', 'house', 'number', 'street', 'code', 'price', 'purchaser', 'entry', 'seller', 'other', 'other', 'other', 'sell_date', 'pubyear', 'pubmonth', 'remarks');
 				for ($i=0; $i < count($column_inputs); $i++) : ?>
 				<tr>
 					<th scope="row"><label for="col_<?php echo $i; ?>">Column <?php echo $i+1; ?></label></th>
