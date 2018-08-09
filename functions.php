@@ -1,23 +1,17 @@
 <?php
 
 $subscriptions = array(
-	'greater-new-orleans' => array(
-		'orleans',
-		'jefferson',
-		'st-tammany',
-		'st-bernard',
-	),
 	'orleans' => array(
 		'orleans',
-	),
-	'st-tammany' => array(
-		'st-tammany',
 	),
 	'jefferson' => array(
 		'jefferson',
 	),
 	'st-bernard' => array(
 		'st-bernard',
+	),
+	'st-tammany' => array(
+		'st-tammany',
 	),
 	'st-charles' => array(
 		'st-charles',
@@ -28,18 +22,11 @@ $subscriptions = array(
 	'plaquemines' => array(
 		'plaquemines',
 	),
-	'capitol-region' => array(
+	'east-baton-rouge' => array(
 		'east-baton-rouge',
-		'west-baton-rouge',
-		'livingston',
-		'tangipahoa',
-		'ascension',
-		'iberville',
 	),
-	'ebr-wbr-living' => array(
-		'east-baton-rouge',
+	'west-baton-rouge' => array(
 		'west-baton-rouge',
-		'livingston',
 	),
 	'livingston' => array(
 		'livingston',
@@ -52,6 +39,27 @@ $subscriptions = array(
 	),
 	'iberville' => array(
 		'iberville',
+	),
+	'lafourche' => array(
+		'lafourche',
+	),
+	'terrebonne' => array(
+		'terrebonne',
+	),
+	'st-mary' => array(
+		'st-mary',
+	),
+	'iberia' => array(
+		'iberia',
+	),
+	'washington' => array(
+		'washington',
+	),
+	'st-james' => array(
+		'st-james',
+	),
+	'assumption' => array(
+		'assumption',
 	),
 	'east-feliciana' => array(
 		'east-feliciana',
@@ -128,23 +136,23 @@ add_action( 'wp', 'redirect_from_search_tool' );
 
 
 function deedfax_login_logo() { ?>
-    <style type="text/css">
-        #login h1 a, .login h1 a {
-            background-image: url(<?php echo plugin_dir_url(__FILE__); ?>/assets/img/logo.jpg);
+	<style type="text/css">
+		#login h1 a, .login h1 a {
+			background-image: url(<?php echo plugin_dir_url(__FILE__); ?>/assets/img/logo.jpg);
 		height:53px;
 		width:300px;
 		background-size: 300px 53px;
 		background-repeat: no-repeat;
-        	padding-bottom: 30px;
-        }
-    </style>
+			padding-bottom: 30px;
+		}
+	</style>
 <?php }
 add_action( 'login_enqueue_scripts', 'deedfax_login_logo' );
 
 add_filter('wp_nav_menu_items','add_login_link', 10, 2);
 function add_login_link( $items, $args ) {
-    if( $args->theme_location == 'top')  {
-    	if (is_user_logged_in()) {
+	if( $args->theme_location == 'top')  {
+		if (is_user_logged_in()) {
 			$items .= '
 <li class="menu-item menu-item-type-post_type menu-item-object-page first">
 	<a href="'.get_site_url(null, 'search').'" data-level="1">
@@ -153,7 +161,7 @@ function add_login_link( $items, $args ) {
 		</span>
 	</a>
 </li>';
-    	} else {
+		} else {
 			$items .= '
 <li class="menu-item menu-item-type-post_type menu-item-object-page first">
 	<a href="'.wp_login_url( get_permalink() ).'" data-level="1">
@@ -162,10 +170,10 @@ function add_login_link( $items, $args ) {
 		</span>
 	</a>
 </li>';
-    	}
+		}
 
-    }
-    return $items;
+	}
+	return $items;
 }
 
 function deedfax_send_email( $recipient ) {
@@ -231,5 +239,25 @@ function deedfax_schedule_user_email_test() {
 		$user_info = get_userdata($user->ID);
 		$email = $user_info->user_email;
 		wp_schedule_single_event( $timestamp, 'deedfax_send_email', array($email) );
+	}
+}
+
+/**
+ * Disable Admin Notification of User Password Change
+ *
+ */
+if ( ! function_exists( 'wp_password_change_notification' ) ) {
+	function wp_password_change_notification( $user ) {
+		return;
+	}
+}
+
+/**
+ * Disable New User Notifications
+ *
+ */
+if ( ! function_exists( 'wp_new_user_notification' ) ) {
+	function wp_new_user_notification( $user ) {
+		return;
 	}
 }

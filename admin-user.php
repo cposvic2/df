@@ -15,6 +15,10 @@ function deedfax_user_profile_fields( $user ) {
 				<th><label for="address">Street Address</label></th>
 				<td><input type="text" name="address" id="address" value="<?php echo esc_html( get_user_meta($user->ID, 'address', TRUE) ); ?>" class="regular-text code"></td>
 			</tr>
+			<tr class="user-address2-wrap">
+				<th><label for="address2">Address Line 2</label></th>
+				<td><input type="text" name="address2" id="address2" value="<?php echo esc_html( get_user_meta($user->ID, 'address2', TRUE) ); ?>" class="regular-text code"></td>
+			</tr>
 			<tr class="user-city-wrap">
 				<th><label for="city">City</label></th>
 				<td><input type="text" name="city" id="city" value="<?php echo esc_html( get_user_meta($user->ID, 'city', TRUE) ); ?>" class="regular-text code"></td>
@@ -29,7 +33,7 @@ function deedfax_user_profile_fields( $user ) {
 			</tr>
 		</table>
 		<?php		
-		if (in_array('subscriber', (array)$user->roles)) {
+		if (in_array('subscriber', (array)$user->roles) || in_array('administrator', (array)$user->roles)) {
 			global $subscriptions;
 			$pcode = get_user_meta($user->ID, 'pcode', TRUE);
 			$child_user_link = get_site_url().'/signup?pcode='.$pcode;
@@ -54,9 +58,9 @@ function deedfax_user_profile_fields( $user ) {
 						<th scope="row"><label for="<?php echo $subscription; ?>"><?php echo $subscription; ?></label></th>
 						<td>
 							<fieldset>
-								<label><input type="radio" name="<?php echo $subscription; ?>" value="both" <?php checked( (stripos(get_user_meta($user->ID, $subscription, true), 'both')  !== false), true ); ?>> Both</label><br>
-								<label><input type="radio" name="<?php echo $subscription; ?>" value="online" <?php checked( (stripos(get_user_meta($user->ID, $subscription, true), 'online')  !== false), true ); ?>> Online</label><br>
-								<label><input type="radio" name="<?php echo $subscription; ?>" value="print" <?php checked( stripos(get_user_meta($user->ID, $subscription, true), 'print')  !== false ); ?>> Print</label><br>
+								<label><input type="radio" name="<?php echo $subscription; ?>" value="<?php echo $subscription; ?>-both" <?php checked( (stripos(get_user_meta($user->ID, $subscription, true), 'both')  !== false), true ); ?>> Both</label><br>
+								<label><input type="radio" name="<?php echo $subscription; ?>" value="<?php echo $subscription; ?>-online" <?php checked( (stripos(get_user_meta($user->ID, $subscription, true), 'online')  !== false), true ); ?>> Online</label><br>
+								<label><input type="radio" name="<?php echo $subscription; ?>" value="<?php echo $subscription; ?>-print" <?php checked( stripos(get_user_meta($user->ID, $subscription, true), 'print')  !== false ); ?>> Print</label><br>
 								<label><input type="radio" name="<?php echo $subscription; ?>" value="0" <?php checked( !get_user_meta($user->ID, $subscription, true) ); ?>> None</label>
 							</fieldset>
 						</td>
@@ -96,6 +100,8 @@ function deedfax_save_user_profile_fields( $user_id ) {
 		update_user_meta( $user_id, 'phone', $phone );
 		$address = sanitize_text_field( $_POST['address'] );
 		update_user_meta( $user_id, 'address', $address );
+		$address2 = sanitize_text_field( $_POST['address2'] );
+		update_user_meta( $user_id, 'address2', $address2 );
 		$city = sanitize_text_field( $_POST['city'] );
 		update_user_meta( $user_id, 'city', $city );
 		$state = sanitize_text_field( $_POST['state'] );
