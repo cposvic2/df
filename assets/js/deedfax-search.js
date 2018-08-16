@@ -1,10 +1,3 @@
-var defaultCenter = {lat: 30.1, lng: -90.3};
-var defaultZoom = 8;
-var map;
-var infowindow;
-var markers = [];
-
-
 (function($){
 	$( document ).ready(function() {
 		$("#parish").change(function() {

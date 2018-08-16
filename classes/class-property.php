@@ -480,66 +480,6 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 		return $this->getList($results);
 	}
 
-	public function searchQueryCount($parish_id, $subdivision_ids, $street_ids, $district_ids, $min_price, $max_price, $start_date, $end_date){
-		global $wpdb;
-		$values = array();
-		$search = "SELECT COUNT(*) FROM $this->_tableName WHERE parish_id = %d";
-		$values[] = $parish_id;
-
-		if (count($subdivision_ids)) {
-			$search .= " AND subdivision_id IN (%d";
-			for ($i=1; $i < count($subdivision_ids); $i++) { 
-				$search .= ", %d";
-			}
-			$search .= ")";
-			$values = array_merge($values, $subdivision_ids);
-		}
-
-		if (count($street_ids)) {
-			$search .= " AND street_id IN (%d";
-			for ($i=1; $i < count($street_ids); $i++) { 
-				$search .= ", %d";
-			}
-			$search .= ")";
-			$values = array_merge($values, $street_ids);
-		}
-
-		if (count($district_ids)) {
-			$search .= " AND district_id IN (%d";
-			for ($i=1; $i < count($district_ids); $i++) { 
-				$search .= ", %d";
-			}
-			$search .= ")";
-			$values = array_merge($values, $district_ids);
-		}
-
-		if ($min_price) {
-			$search .= " AND price >= %f";
-			$values[] = $min_price;
-		}
-
-		if ($max_price) {
-			$search .= " AND price <= %f";
-			$values[] = $max_price;
-		}
-
-		if ($start_date) {
-			$search .= " AND sell_date >= %s";
-			$values[] = $start_date;
-		}
-
-		if ($end_date) {
-			$search .= " AND sell_date <= %s";
-			$values[] = $end_date;
-		}
-
-		$results = $wpdb->get_var(
-			$wpdb->prepare($search, $values)
-		);
-
-		return $results;
-	}
-
 	public function searchQuery($parish_id, $subdivision_ids, $street_ids, $district_ids, $min_price, $max_price, $start_date, $end_date, $rowStart = 0, $rowCount = 20){
 		global $wpdb;
 		$values = array();
@@ -600,6 +540,204 @@ class DeedfaxPropertyDAO extends DeedfaxBaseDAO {
 		);
 		return $this->getList($results);
 	}
+
+	public function searchQueryCount($parish_id, $subdivision_ids, $street_ids, $district_ids, $min_price, $max_price, $start_date, $end_date){
+		global $wpdb;
+		$values = array();
+		$search = "SELECT COUNT(*) FROM $this->_tableName WHERE parish_id = %d";
+		$values[] = $parish_id;
+
+		if (count($subdivision_ids)) {
+			$search .= " AND subdivision_id IN (%d";
+			for ($i=1; $i < count($subdivision_ids); $i++) { 
+				$search .= ", %d";
+			}
+			$search .= ")";
+			$values = array_merge($values, $subdivision_ids);
+		}
+
+		if (count($street_ids)) {
+			$search .= " AND street_id IN (%d";
+			for ($i=1; $i < count($street_ids); $i++) { 
+				$search .= ", %d";
+			}
+			$search .= ")";
+			$values = array_merge($values, $street_ids);
+		}
+
+		if (count($district_ids)) {
+			$search .= " AND district_id IN (%d";
+			for ($i=1; $i < count($district_ids); $i++) { 
+				$search .= ", %d";
+			}
+			$search .= ")";
+			$values = array_merge($values, $district_ids);
+		}
+
+		if ($min_price) {
+			$search .= " AND price >= %f";
+			$values[] = $min_price;
+		}
+
+		if ($max_price) {
+			$search .= " AND price <= %f";
+			$values[] = $max_price;
+		}
+
+		if ($start_date) {
+			$search .= " AND sell_date >= %s";
+			$values[] = $start_date;
+		}
+
+		if ($end_date) {
+			$search .= " AND sell_date <= %s";
+			$values[] = $end_date;
+		}
+
+		$results = $wpdb->get_var(
+			$wpdb->prepare($search, $values)
+		);
+
+		return $results;
+	}
+
+	public function searchQuery2($parish_id, $subdivision_ids, $street_ids, $district_ids, $min_price, $max_price, $start_date, $end_date, $rowStart = 0, $rowCount = 20){
+		global $wpdb;
+		$values = array();
+		$search = "SELECT * FROM $this->_tableName WHERE parish_id = %d";
+		$values[] = $parish_id;
+
+		if (count($subdivision_ids) || count($street_ids) || count($district_ids)) {
+			
+			$add_to_search = array();
+			if (count($subdivision_ids)) {
+				$tmp = "subdivision_id IN (%d";
+				for ($i=1; $i < count($subdivision_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $subdivision_ids);
+			}
+
+			if (count($street_ids)) {
+				$tmp = "street_id IN (%d";
+				for ($i=1; $i < count($street_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $street_ids);
+			}
+
+			if (count($district_ids)) {
+				$tmp = "district_id IN (%d";
+				for ($i=1; $i < count($district_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $district_ids);
+			}
+			$search .= " AND (".implode(" OR ",$add_to_search).")";
+		}
+
+		if ($min_price) {
+			$search .= " AND price >= %f";
+			$values[] = $min_price;
+		}
+
+		if ($max_price) {
+			$search .= " AND price <= %f";
+			$values[] = $max_price;
+		}
+
+		if ($start_date) {
+			$search .= " AND sell_date >= %s";
+			$values[] = $start_date;
+		}
+
+		if ($end_date) {
+			$search .= " AND sell_date <= %s";
+			$values[] = $end_date;
+		}
+
+		$search .=" LIMIT ".$rowStart.",".$rowCount;
+
+		$results = $wpdb->get_results(
+			$wpdb->prepare($search, $values)
+		);
+		return $this->getList($results);
+	}
+
+	public function searchQueryCount2($parish_id, $subdivision_ids, $street_ids, $district_ids, $min_price, $max_price, $start_date, $end_date){
+		global $wpdb;
+		$values = array();
+		$search = "SELECT COUNT(*) FROM $this->_tableName WHERE parish_id = %d";
+		$values[] = $parish_id;
+
+		if (count($subdivision_ids) || count($street_ids) || count($district_ids)) {
+			
+			$add_to_search = array();
+			if (count($subdivision_ids)) {
+				$tmp = "subdivision_id IN (%d";
+				for ($i=1; $i < count($subdivision_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $subdivision_ids);
+			}
+
+			if (count($street_ids)) {
+				$tmp = "street_id IN (%d";
+				for ($i=1; $i < count($street_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $street_ids);
+			}
+
+			if (count($district_ids)) {
+				$tmp = "district_id IN (%d";
+				for ($i=1; $i < count($district_ids); $i++) { 
+					$tmp .= ", %d";
+				}
+				$tmp .= ")";
+				$add_to_search[] = $tmp;
+				$values = array_merge($values, $district_ids);
+			}
+			$search .= " AND (".implode(" OR ",$add_to_search).")";
+		}
+
+		if ($min_price) {
+			$search .= " AND price >= %f";
+			$values[] = $min_price;
+		}
+
+		if ($max_price) {
+			$search .= " AND price <= %f";
+			$values[] = $max_price;
+		}
+
+		if ($start_date) {
+			$search .= " AND sell_date >= %s";
+			$values[] = $start_date;
+		}
+
+		if ($end_date) {
+			$search .= " AND sell_date <= %s";
+			$values[] = $end_date;
+		}
+
+		$results = $wpdb->get_var(
+			$wpdb->prepare($search, $values)
+		);
+
+		return $results;
+	}
+
 
 	protected function readRow($row){
 		$object = new DeedfaxProperty();

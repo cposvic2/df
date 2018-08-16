@@ -163,6 +163,14 @@ class DeedfaxSubdivisionDAO extends DeedfaxBaseDAO {
 		return $this->getList($results);
 	}
 
+	public function searchQuery($value, $parish_id){
+		global $wpdb;
+		$results = $wpdb->get_results(
+			$wpdb->prepare("SELECT * FROM $this->_tableName WHERE parish_id = %d AND name LIKE '%" . $wpdb->esc_like($value) . "%'", $parish_id)
+		);
+		return $this->getList($results);
+	}
+
 	public function loadBySlug($value){
 		global $wpdb;
 		$results = $wpdb->get_results(

@@ -67,15 +67,14 @@ function deedfax_enqueue_scripts() {
 	wp_register_script('deedfax_search_results', DEEDFAX_PLUGIN_URL.'/assets/js/deedfax-search-results.js', array(), '1.0.0', true);
 
 	global $post;
-	if ( is_singular() && has_shortcode($post->post_content, 'deedfax_search_tool') ) {
+	if ( is_singular() && (has_shortcode($post->post_content, 'deedfax_search_tool') || has_shortcode($post->post_content, 'deedfax_search_tool2')) ) {
 		wp_enqueue_script('select2');
-		wp_enqueue_script('google_maps_api');
 		wp_enqueue_script('deedfax_search');
 		wp_enqueue_style('deedfax-style',  DEEDFAX_PLUGIN_URL.'/assets/css/deedfax-style.css');
 		wp_enqueue_style('select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
 	}
 
-	if ( is_singular() && is_page('search-results') ) {
+	if ( is_singular() && (is_page('search-results') ||  is_page('search-results-2') ) ) {
 		wp_enqueue_script('google_maps_api');
 		wp_enqueue_script('deedfax_search_results');
 		wp_enqueue_style('deedfax-style',  DEEDFAX_PLUGIN_URL.'/assets/css/deedfax-style.css');
