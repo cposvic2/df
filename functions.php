@@ -1,6 +1,28 @@
 <?php
 
 $subscriptions = array(
+	'greater-new-orleans' => array(
+		'orleans',
+		'jefferson',
+		'st-tammany',
+		'st-bernard',
+	),
+	'capitol-region' => array(
+		'east-baton-rouge',
+		'west-baton-rouge',
+		'livingston',
+		'tangipahoa',
+		'ascension',
+		'iberville',
+	),
+	'ebr-wbr-living' => array(
+		'east-baton-rouge',
+		'west-baton-rouge',
+		'livingston',
+	),
+	'orleans' => array(
+		'orleans',
+	),
 	'orleans' => array(
 		'orleans',
 	),
@@ -177,6 +199,9 @@ function add_login_link( $items, $args ) {
 }
 
 function deedfax_send_email( $recipient ) {
+	$user = get_user_by( 'email', $recipient );
+	deedfax_unsubscribe_user( $user );
+
 	$boundary = uniqid('np');
 	$headers = 'From: Deedfax Online <admin@deedfaxonline.com>' . "\r\n";
 	$headers .= 'Content-Type: multipart/alternative;boundary="' . $boundary . '"' . "\r\n";
@@ -239,6 +264,15 @@ function deedfax_schedule_user_email_test() {
 		$user_info = get_userdata($user->ID);
 		$email = $user_info->user_email;
 		wp_schedule_single_event( $timestamp, 'deedfax_send_email', array($email) );
+	}
+}
+
+function deedfax_unsubscribe_user( $user ) {
+	if ( !!$user ) {
+		global $subscriptions;
+		foreach ($subscriptions as $subscription => $subscription_parishes) {
+			update_user_meta( $user->ID, $subscription, '' );
+		}
 	}
 }
 

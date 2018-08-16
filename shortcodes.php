@@ -4,11 +4,14 @@
  * Creates Deedfax Search Tool
  */
 function deedfax_search_tool($atts = []) {
-	$default = 1;
-
 	// Parishes
 	$parish_select = '<select class="shipping_method" name="parish" id="parish">';
 	$user_parishes = get_user_parishes();
+	if (count($user_parishes)) {
+		$default = $user_parishes[0]->getId();
+	} else {
+		$default = 0;
+	}
 	foreach ($user_parishes as $parish) {
 		$parish_select .= '<option value="'.$parish->getSlug().'" '.selected($parish->getId(), $default, false).'>'.$parish->getName().'</option>';
 	}
